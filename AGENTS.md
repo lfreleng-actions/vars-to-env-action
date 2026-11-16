@@ -35,12 +35,12 @@ a pull request, not the full set:
 
 The action and its tests use the Python standard library alone, so they
 need no install step. Run the unit tests from the repository root with
-any Python 3.9 or newer, and also with 3.9 itself, the oldest supported
+any Python 3.10 or newer, and also with 3.10 itself, the oldest supported
 version:
 
 ```bash
 python3 -m unittest discover -s tests -v
-uv run --python 3.9 python -m unittest discover -s tests
+uv run --python 3.10 python -m unittest discover -s tests
 ```
 
 `tests/reference/vectors.json` holds golden results recorded from the
