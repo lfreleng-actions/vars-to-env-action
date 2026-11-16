@@ -44,7 +44,7 @@ def step_script() -> str:
 
 
 class VersionGuardTest(unittest.TestCase):
-    """Refusing interpreters older than Python 3.9."""
+    """Refusing interpreters older than Python 3.10."""
 
     def test_old_interpreter_refused(self) -> None:
         """An old version fails with an error command, before importing the package."""
@@ -55,12 +55,11 @@ class VersionGuardTest(unittest.TestCase):
         self.assertEqual(caught.exception.code, 1)
         self.assertTrue(
             out.getvalue().startswith(
-                f"::error::vars-to-env-action needs Python 3.9 or newer, but {sys.executable} is Python "
+                f"::error::vars-to-env-action needs Python 3.10 or newer, but {sys.executable} is Python "
             ),
             out.getvalue(),
         )
 
-    @unittest.expectedFailure
     def test_python_3_9_refused(self) -> None:
         """Python 3.9, just below the floor, fails with the error command."""
         out = io.StringIO()
@@ -112,7 +111,7 @@ class EntryPointTest(unittest.TestCase):
 
 @unittest.skipIf(BASH is None or os.name == "nt", "needs bash and POSIX executables")
 class InterpreterSelectionTest(unittest.TestCase):
-    """The step tries python3, then python, taking the first that is 3.9 or newer."""
+    """The step tries python3, then python, taking the first that is 3.10 or newer."""
 
     def run_step(self, python3: str | None, python: str | None) -> tuple[int, str, str]:
         """Run the step with fake interpreters; return its status, log and choice."""
@@ -177,12 +176,11 @@ class InterpreterSelectionTest(unittest.TestCase):
         status, _, chosen = self.run_step(None, self.real("python"))
         self.assertEqual((status, chosen), (0, "python"))
 
-    def test_skips_a_python3_older_than_3_9(self) -> None:
-        """A python3 that runs but predates 3.9 is passed over for python."""
+    def test_skips_a_python3_older_than_3_10(self) -> None:
+        """A python3 that runs but predates 3.10 is passed over for python."""
         status, log, chosen = self.run_step(self.old("python3"), self.real("python"))
         self.assertEqual((status, log, chosen), (0, "Exported envvar -> A\n", "python"))
 
-    @unittest.expectedFailure
     def test_skips_a_python3_at_3_9(self) -> None:
         """A python3 at 3.9, just below the floor, is passed over for python."""
         status, log, chosen = self.run_step(self.old("python3", 9), self.real("python"))
@@ -203,14 +201,14 @@ class InterpreterSelectionTest(unittest.TestCase):
         self.assertEqual(status, 1)
         self.assertEqual(
             log,
-            "::error::vars-to-env-action needs Python 3.9 or newer, but neither python3 nor python on PATH is\n",
+            "::error::vars-to-env-action needs Python 3.10 or newer, but neither python3 nor python on PATH is\n",
         )
 
     def test_fails_clearly_when_every_python_is_old(self) -> None:
-        """Interpreters that run but predate 3.9 are refused like missing ones."""
+        """Interpreters that run but predate 3.10 are refused like missing ones."""
         status, log, _ = self.run_step(self.old("python3"), self.old("python"))
         self.assertEqual(status, 1)
-        self.assertIn("needs Python 3.9 or newer", log)
+        self.assertIn("needs Python 3.10 or newer", log)
 
 
 class ActionMetadataTest(unittest.TestCase):
