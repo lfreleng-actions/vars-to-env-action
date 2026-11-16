@@ -29,7 +29,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, windows-latest]
+        os:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - ubuntu-22.04
+          - macos-latest
+          - windows-latest
+        # The system python3 on ubuntu-22.04 is 3.10, the oldest Python
+        # the action supports; that leg checks it really ran there.
+        include:
+          - os: ubuntu-22.04
+            python: "3.10"
     steps:
       # Load the egress allow-list out-of-band from the
       # organisation's .github repository and publish it as
@@ -59,13 +69,23 @@ jobs:
       # provides, as the action itself does.
       - name: "Run unit tests"
         shell: bash
+        env:
+          EXPECTED_PYTHON: ${{ matrix.python }}
         run: |
           # Run unit tests
           python=python3
-          if ! python3 -c "" >/dev/null 2>&1; then
+          if ! python3 -I -c "" >/dev/null 2>&1; then
             python=python
           fi
           "$python" --version
+          if [ -n "$EXPECTED_PYTHON" ]; then
+            found=$("$python" -I -c \
+              'import sys; print("%d.%d" % sys.version_info[:2])')
+            if [ "$found" != "$EXPECTED_PYTHON" ]; then
+              echo "::error::Expected Python $EXPECTED_PYTHON, found $found"
+              exit 1
+            fi
+          fi
           "$python" -m unittest discover -s tests -v
 
   integration:
@@ -77,7 +97,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, windows-latest]
+        os:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - ubuntu-22.04
+          - macos-latest
+          - windows-latest
     # Variables already set before the action runs, for the override cases.
     env:
       VTE_KEPT: "from the job"

@@ -23,11 +23,11 @@ whose `include` and `exclude` patterns keep to the syntax JavaScript and
 Python share. A short list of differences follows below; most of them add
 validation.
 
-The action needs `bash` and Python 3.9 or newer, as `python3` or `python` on
-`PATH`; it uses `python3` when that is 3.9 or newer, and otherwise `python`.
+The action needs `bash` and Python 3.10 or newer, as `python3` or `python` on
+`PATH`; it uses `python3` when that is 3.10 or newer, and otherwise `python`.
 GitHub-hosted Linux (x64 and arm64), macOS and Windows runners
 provide both, so it runs there with no setup step, no network access and no
-packages to install. Self-hosted runners need Python 3.9 or newer; on Windows,
+packages to install. Self-hosted runners need Python 3.10 or newer; on Windows,
 `bash` comes from Git for Windows.
 
 ## Usage Example
@@ -169,7 +169,7 @@ order, then the rest in document order. For each key it:
    full Unicode case mapping, so `ß` becomes `SS`. An unrecognised `convert`
    value means upper case, with a warning. The mapping comes from the Unicode
    data of the Python running the action, so it can differ from Node.js for
-   letters newer than that data: Python 3.9 and 3.10 carry Unicode 13.0.
+   letters newer than that data: Python 3.10 carries Unicode 13.0.
    Names from the `vars` and `secrets` contexts are ASCII, since GitHub allows
    letters, digits and underscores alone, so the difference reaches no further
    than hand-built JSON holding such letters. `convert: none` avoids case
@@ -265,7 +265,7 @@ from running on Python's regular expressions and Unicode data;
 | `\s` in a pattern                                                                                    | Also matches Unicode whitespace, such as U+00A0                                                            | Matches ASCII whitespace alone                                           |
 | `$` in a pattern                                                                                     | Matches at the end of the key alone                                                                        | Also matches before a final line feed; `\Z` gives the JavaScript meaning |
 | `.` in a pattern                                                                                     | Matches neither CR, U+2028 nor U+2029                                                                      | Matches every character but a line feed                                  |
-| Converting a letter newer than Python's Unicode data, such as U+10597                                | Converted with Node.js's own Unicode data: U+10597 becomes U+10570                                         | Left unchanged: U+10597 on Python 3.9 and 3.10, which carry Unicode 13.0 |
+| Converting a letter newer than Python's Unicode data, such as U+10597                                | Converted with Node.js's own Unicode data: U+10597 becomes U+10570                                         | Left unchanged: U+10597 on Python 3.10, which carries Unicode 13.0       |
 
 <!-- markdownlint-enable MD013 -->
 
@@ -290,7 +290,7 @@ from running on Python's regular expressions and Unicode data;
 
 ## Testing
 
-The unit tests use the standard library alone and run on Python 3.9 or newer,
+The unit tests use the standard library alone and run on Python 3.10 or newer,
 on Linux, macOS and Windows:
 
 ```bash

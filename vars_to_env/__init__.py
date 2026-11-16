@@ -8,6 +8,6 @@ A standard-library reimplementation of infovista-opensource/vars-to-env-action
 observable behaviour, including JavaScript key ordering and value
 stringification, apart from the deliberate differences the README lists.
 
-entrypoint.py refuses interpreters older than Python 3.9 before importing this
-package, so it may use any syntax that 3.9 accepts.
+entrypoint.py refuses interpreters older than Python 3.10 before importing this
+package, so it may use any syntax that 3.10 accepts.
 """

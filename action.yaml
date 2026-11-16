@@ -79,19 +79,19 @@ runs:
         # Export variables
         # Run each candidate rather than trusting PATH alone: on Windows,
         # python3 can be the Microsoft Store alias, which is no interpreter,
-        # and a self-hosted runner's python3 may predate 3.9 where its
+        # and a self-hosted runner's python3 may predate 3.10 where its
         # python does not.
         python=""
         for candidate in python3 python; do
           if command -v "$candidate" >/dev/null 2>&1 &&
-            "$candidate" -c 'import sys; sys.exit(sys.version_info < (3, 9))' \
+            "$candidate" -c 'import sys; sys.exit(sys.version_info < (3, 10))' \
               >/dev/null 2>&1; then
             python="$candidate"
             break
           fi
         done
         if [ -z "$python" ]; then
-          echo "::error::vars-to-env-action needs Python 3.9 or newer," \
+          echo "::error::vars-to-env-action needs Python 3.10 or newer," \
             "but neither python3 nor python on PATH is"
           exit 1
         fi

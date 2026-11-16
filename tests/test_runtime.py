@@ -16,7 +16,7 @@ import unittest
 
 from tests.support import entries, entry, failure, inputs, run_action
 
-# Vithkuqi letters arrived in Unicode 14.0; Python 3.9 and 3.10 carry 13.0.
+# Vithkuqi letters arrived in Unicode 14.0; Python 3.10 carries 13.0.
 VITHKUQI_SMALL = "\U00010597"
 VITHKUQI_CAPITAL = "\U00010570"
 
@@ -85,7 +85,7 @@ class CaseMappingTest(unittest.TestCase):
     """Names are case-mapped with the Unicode data of the Python in use."""
 
     def test_mapping_shared_by_every_supported_python(self) -> None:
-        """ASCII and the letters in the reference vectors map alike from 3.9 on."""
+        """ASCII and the letters in the reference vectors map alike from 3.10 on."""
         secrets = (
             '{"Mixed_Case_09":"1","stra\\u00dfe":"2","\\u017f":"3",'
             + '"\\ufb01le":"4","\\u0130stanbul":"5"}'
